@@ -49,6 +49,7 @@ class BaseSMOTE(BaseOverSampler):
         self.random_state = random_state
         self.k_neighbors = k_neighbors
         self.n_jobs = n_jobs
+        self._row_ids = None
 
     def _validate_estimator(self):
         """Check the NN estimators shared across the different SMOTE
@@ -109,6 +110,7 @@ class BaseSMOTE(BaseOverSampler):
         steps = step_size * random_state.uniform(size=n_samples)
         rows = np.floor_divide(samples_indices, nn_num.shape[1])
         cols = np.mod(samples_indices, nn_num.shape[1])
+        self._row_ids = rows # added this to know which rows were used to generate the new samples
 
         y_new = np.array([y_type] * len(samples_indices), dtype=y_dtype)
 
